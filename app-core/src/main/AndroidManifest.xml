@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Hardware & Multimedia Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.concurrent" android:required="false" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- Telephony, SIM, Calling & SMS Permissions -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_MMS" />
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
+
+    <!-- Location & GNSS Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- Sensor Permissions -->
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+
+    <!-- Bluetooth & Connectivity Permissions -->
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <!-- Network & Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- System, Notifications & Foreground Services -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+
+    <!-- Storage Permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+
+    <!-- Biometric & Hardware Features -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <application>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Required for Android to recognize app as eligible Default Phone / Dialer App -->
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
+            <!-- Required by Android RoleManager for android.app.role.SMS -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+        </activity>
+
+        <!-- Custom In-Call Screen Activity -->
+        <activity
+            android:name=".calling.InCallActivity"
+            android:exported="false"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleTask" />
+
+        <!-- InCallService for Custom In-Call Screen -->
+        <service
+            android:name=".calling.AppInCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE"
+            android:exported="true">
+            <meta-data
+                android:name="android.telecom.IN_CALL_SERVICE_UI"
+                android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
+
+        <!-- Telecom ConnectionService -->
+        <service
+            android:name=".calling.AppConnectionService"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+
+        <!-- CallScreeningService -->
+        <service
+            android:name=".calling.AppCallScreeningService"
+            android:permission="android.permission.BIND_SCREENING_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService" />
+            </intent-filter>
+        </service>
+
+        <!-- Foreground Service -->
+        <service
+            android:name=".system.AppForegroundService"
+            android:foregroundServiceType="camera|microphone|location|dataSync|mediaPlayback"
+            android:exported="false" />
+
+        <!-- Location Tracker Foreground Service -->
+        <service
+            android:name=".location.LocationTrackerService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
+        <!-- SMS BroadcastReceiver -->
+        <receiver
+            android:name=".sms.SmsBroadcastReceiver"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Service that delivers quick responses to phone calls (Required by Android RoleManager for android.app.role.SMS) -->
+        <service
+            android:name=".sms.RespondViaMessageService"
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+        </service>
+
+        <!-- MMS WAP Push Receiver -->
+        <receiver
+            android:name=".sms.MmsWapPushReceiver"
+            android:permission="android.permission.BROADCAST_WAP_PUSH"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+                <data android:mimeType="application/vnd.wap.mms-message" />
+            </intent-filter>
+        </receiver>
+
+        <!-- System Event BroadcastReceiver -->
+        <receiver
+            android:name=".system.SystemBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Alarm BroadcastReceiver -->
+        <receiver
+            android:name=".system.AlarmReceiver"
+            android:exported="false" />
+
+        <!-- FileProvider for Secure File Sharing & Camera Intents -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>
