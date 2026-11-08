@@ -25,6 +25,7 @@ import com.example.droidsample.camera.CameraIntentsHelper
 enum class CameraDashboardTab(val label: String, val icon: ImageVector) {
     CAMERAX("CameraX", Icons.Default.CameraAlt),
     CAMERA2("Camera2 Pro", Icons.Default.Tune),
+    NDK("NDK Camera", Icons.Default.DeveloperBoard),
     CAMERA1("Camera1", Icons.Default.History),
     DIAGNOSTICS("Diagnostics", Icons.Default.Analytics),
     INTENTS("System Intents", Icons.Default.PhotoLibrary)
@@ -102,6 +103,7 @@ fun CameraScreen(
                 when (selectedTab) {
                     CameraDashboardTab.CAMERAX -> CameraXView()
                     CameraDashboardTab.CAMERA2 -> Camera2View()
+                    CameraDashboardTab.NDK -> CameraNdkView()
                     CameraDashboardTab.CAMERA1 -> Camera1View()
                     CameraDashboardTab.DIAGNOSTICS -> CameraMetadataInspector()
                     CameraDashboardTab.INTENTS -> CameraIntentsView()
@@ -216,19 +218,27 @@ fun CameraIntentsView() {
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = {
-                        val file = CameraIntentsHelper.createImageFile(context)
-                        val uri = CameraIntentsHelper.getUriForFile(context, file)
-                        tempCaptureUri = uri
-                        takePictureLauncher.launch(uri)
+                        try {
+                            val file = CameraIntentsHelper.createImageFile(context)
+                            val uri = CameraIntentsHelper.getUriForFile(context, file)
+                            tempCaptureUri = uri
+                            takePictureLauncher.launch(uri)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Failed to launch camera: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                        }
                     }) {
                         Text("Capture Photo")
                     }
 
                     Button(onClick = {
-                        val file = CameraIntentsHelper.createVideoFile(context)
-                        val uri = CameraIntentsHelper.getUriForFile(context, file)
-                        tempCaptureUri = uri
-                        captureVideoLauncher.launch(uri)
+                        try {
+                            val file = CameraIntentsHelper.createVideoFile(context)
+                            val uri = CameraIntentsHelper.getUriForFile(context, file)
+                            tempCaptureUri = uri
+                            captureVideoLauncher.launch(uri)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Failed to launch video recorder: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                        }
                     }) {
                         Text("Record Video")
                     }

@@ -3,6 +3,7 @@ package com.example.droidsample.camera
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +26,10 @@ object CameraIntentsHelper {
      */
     fun createImageFile(context: Context): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val storageDir = context.getExternalFilesDir(null) ?: context.filesDir
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) ?: context.filesDir
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
     }
 
@@ -34,7 +38,10 @@ object CameraIntentsHelper {
      */
     fun createVideoFile(context: Context): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val storageDir = context.getExternalFilesDir(null) ?: context.filesDir
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES) ?: context.filesDir
+        if (!storageDir.exists()) {
+            storageDir.mkdirs()
+        }
         return File.createTempFile("VID_${timeStamp}_", ".mp4", storageDir)
     }
 
